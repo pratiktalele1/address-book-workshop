@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.app.dto.AddressDTO;
 import com.bridgelabz.app.dto.ResponseDTO;
 import com.bridgelabz.app.model.AddressData;
+import com.bridgelabz.app.service.AddressBookService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,8 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/address") @Slf4j
 public class AddressBookController {
-	private List<AddressDTO> list=new ArrayList<AddressDTO>();
-	private static AtomicLong atomicLong=new AtomicLong();
+//	private List<AddressDTO> list=new ArrayList<AddressDTO>();
+	
+	@Autowired
+	private AddressBookService addressBookService;
+	
+//	private static AtomicLong atomicLong=new AtomicLong();
 	
 	/**
 	 * requesting to fetch all data using get http method
@@ -36,8 +42,7 @@ public class AddressBookController {
 	@GetMapping
 	private ResponseEntity<ResponseDTO> getAll() {
 		log.info("get all data");
-		ResponseDTO dto=new ResponseDTO("get all call successful",list);
-		return new ResponseEntity<>(dto,HttpStatus.OK);
+		return new ResponseEntity<>(addressBookService.readAll(),HttpStatus.OK);
 	}
 	
 	/**
@@ -47,11 +52,8 @@ public class AddressBookController {
 	 */
 	@PostMapping
 	private ResponseEntity<ResponseDTO> create(@RequestBody AddressDTO AddressData) {
-		AddressData.setId(atomicLong.incrementAndGet());
-		list.add(AddressData);
-		ResponseDTO dto=new ResponseDTO("post call successful", AddressData);
 		log.info("data inserted.");
-		return new ResponseEntity<>(dto,HttpStatus.CREATED);
+		return new ResponseEntity<>(addressBookService.create(AddressData),HttpStatus.CREATED);
 	}
 	
 	/**
@@ -61,10 +63,8 @@ public class AddressBookController {
 	 */
 	@GetMapping("/{id}")
 	private ResponseEntity<ResponseDTO> getById(@PathVariable int id){
-		AddressDTO data =list.stream().filter(e->e.getId()==id).findFirst().get();
-		ResponseDTO dto=new ResponseDTO("get id call successful", data);
 		log.info("data is retrived with id ->"+id);
-		return new ResponseEntity<>(dto,HttpStatus.FOUND);
+		return new ResponseEntity<>(addressBookService.getDataById(id),HttpStatus.FOUND);
 	}
 	
 	/**
@@ -74,13 +74,8 @@ public class AddressBookController {
 	 */
 	@PutMapping("/{id}")
 	private ResponseEntity<ResponseDTO> updateById(@PathVariable int id,@RequestBody AddressDTO addressData){
-		AddressDTO updateData=list.stream().filter(e->e.getId()==id).findFirst().get();
-		updateData.setName(addressData.getName());
-		updateData.setAddress(addressData.getAddress());
-		updateData.setPin(addressData.getPin());
-		ResponseDTO dto=new ResponseDTO("put call successful", updateData);
 		log.info("data updated with id ->"+id);
-		return new ResponseEntity<>(dto,HttpStatus.OK);
+		return new ResponseEntity<>(addressBookService.updateDataById(id, addressData),HttpStatus.OK);
 	}
 	
 	/**
@@ -90,11 +85,8 @@ public class AddressBookController {
 	 */
 	@DeleteMapping("/{id}")
 	private ResponseEntity<ResponseDTO> deleteById(@PathVariable int id) {
-		AddressDTO addressData=list.stream().filter(e->e.getId()==id).findFirst().get();
-		list.remove(addressData);
-		ResponseDTO dto=new ResponseDTO("delete call successful", addressData);
 		log.info("data deleted with id ->"+id);
-		return new ResponseEntity<>(dto,HttpStatus.OK);
+		return new ResponseEntity<>(addressBookService.deleteDataById(id),HttpStatus.OK);
 	}
 
 }
