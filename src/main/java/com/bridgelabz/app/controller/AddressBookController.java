@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.com.bridgelabz.app.AddressDTO;
-import org.com.bridgelabz.app.ResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.app.dto.AddressDTO;
+import com.bridgelabz.app.dto.ResponseDTO;
 import com.bridgelabz.app.model.AddressData;
 
 import lombok.extern.slf4j.Slf4j;

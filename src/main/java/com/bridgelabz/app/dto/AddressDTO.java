@@ -1,4 +1,4 @@
-package org.com.bridgelabz.app;
+package com.bridgelabz.app.dto;
 
 import lombok.Data;
 import lombok.Getter;
