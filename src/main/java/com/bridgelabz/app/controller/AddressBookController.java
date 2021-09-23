@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +53,7 @@ public class AddressBookController {
 	 * @return response dto
 	 */
 	@PostMapping
-	private ResponseEntity<ResponseDTO> create(@RequestBody AddressDTO AddressData) {
+	private ResponseEntity<ResponseDTO> create(@Valid @RequestBody AddressDTO AddressData) {
 		log.info("data inserted.");
 		return new ResponseEntity<>(addressBookService.create(AddressData),HttpStatus.CREATED);
 	}
