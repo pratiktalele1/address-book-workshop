@@ -1,4 +1,4 @@
-package com.bridgelabz.app.dto;
+package org.com.bridgelabz.app;
 
 import lombok.Data;
 import lombok.Getter;
@@ -10,4 +10,5 @@ public @Data class AddressDTO {
 	private String address;
 	private int pin;
 	private long id;
+	
 }
