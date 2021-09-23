@@ -1,5 +1,6 @@
 package com.bridgelabz.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -11,6 +12,8 @@ import com.bridgelabz.app.model.AddressData;
 
 @Service
 public class AddressBookServiceImpl implements AddressBookService {
+
+	List<AddressData> datas = new ArrayList<AddressData>();
 
 	private static AtomicLong atomicLong = new AtomicLong();
 

@@ -9,7 +9,6 @@ import com.bridgelabz.app.model.AddressData;
 
 
 public interface AddressBookService {
-	List<AddressData> datas = new ArrayList<AddressData>();
 
 	ResponseDTO create(AddressDTO e);
 
