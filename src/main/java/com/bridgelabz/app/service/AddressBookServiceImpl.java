@@ -2,20 +2,27 @@ package com.bridgelabz.app.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.app.dto.AddressDTO;
 import com.bridgelabz.app.dto.ResponseDTO;
+import com.bridgelabz.app.exceptionhandler.ABSException;
 import com.bridgelabz.app.model.AddressData;
+import com.bridgelabz.app.repository.IAddressBookRepository;
 
 @Service
 public class AddressBookServiceImpl implements AddressBookService {
-
 	List<AddressData> datas = new ArrayList<AddressData>();
 
 	private static AtomicLong atomicLong = new AtomicLong();
+
+	@Autowired
+	private IAddressBookRepository addressBookRepository;
 
 	/**
 	 * inserting data to list.
@@ -23,8 +30,8 @@ public class AddressBookServiceImpl implements AddressBookService {
 	@Override
 	public ResponseDTO create(AddressDTO e) {
 		AddressData data = new AddressData(atomicLong.incrementAndGet(), e);
-		ResponseDTO dto = new ResponseDTO("get call success", data);
-		datas.add(data);
+		ResponseDTO dto = new ResponseDTO("post call success", data);
+		addressBookRepository.save(data);
 		return dto;
 	}
 
@@ -33,7 +40,7 @@ public class AddressBookServiceImpl implements AddressBookService {
 	 */
 	@Override
 	public ResponseDTO readAll() {
-		ResponseDTO dto=new ResponseDTO("all data fetch", datas);
+		ResponseDTO dto = new ResponseDTO("get call success", addressBookRepository.findAll());
 		return dto;
 	}
 
@@ -42,9 +49,16 @@ public class AddressBookServiceImpl implements AddressBookService {
 	 */
 	@Override
 	public ResponseDTO getDataById(int id) {
-		AddressData data = datas.stream().filter(e -> e.getId() == id).findFirst().get();
-			ResponseDTO dto = new ResponseDTO("get call success", data);
+		List<AddressData> data = addressBookRepository.findAll();
+		Optional<AddressData> getAddress = data.stream().filter(e -> e.getId() == id).findFirst();
+		if (getAddress.isPresent()) {
+			ResponseDTO dto = new ResponseDTO("getById call success", getAddress);
 			return dto;
+		} else {
+			throw new ABSException("data not found for id ->" + id);
+
+		}
+
 	}
 
 	/**
@@ -52,15 +66,26 @@ public class AddressBookServiceImpl implements AddressBookService {
 	 */
 	@Override
 	public ResponseDTO updateDataById(int id, AddressDTO dto) {
-		AddressData data = datas.stream().filter(e -> e.getId() == id).findFirst().get();
-		data.setName(dto.getName());
-		data.setAddress(dto.getAddress());
-		data.setPin(dto.getPin());
-		data.setCityName(dto.getCityName());
-		data.setPhoneNumber(dto.getPhoneNumber());
-		data.setEmailAddress(dto.getEmailAddress());
-		ResponseDTO responseDto = new ResponseDTO("put call success", data);
-		return responseDto;
+
+		List<AddressData> data = addressBookRepository.findAll();
+		Optional<AddressData> getAddress = data.stream().filter(e -> e.getId() == id).findFirst();
+		if (getAddress.isPresent()) {
+			AddressData addressData = data.stream().filter(e -> e.getId() == id).findFirst().get();
+
+			addressData.setName(dto.getName());
+			addressData.setAddress(dto.getAddress());
+			addressData.setPin(dto.getPin());
+			addressData.setCityName(dto.getCityName());
+			addressData.setPhoneNumber(dto.getPhoneNumber());
+			addressData.setEmailAddress(dto.getEmailAddress());
+			addressBookRepository.save(addressData);
+			ResponseDTO responseDto = new ResponseDTO("put call success", addressData);
+			return responseDto;
+		} else {
+			throw new ABSException(id + " <- id not found to update data");
+
+		}
+
 	}
 
 	/**
@@ -68,10 +93,18 @@ public class AddressBookServiceImpl implements AddressBookService {
 	 */
 	@Override
 	public ResponseDTO deleteDataById(int id) {
-		AddressData data = datas.stream().filter(e -> e.getId() == id).findFirst().get();
-		datas.remove(data);
-		ResponseDTO dto = new ResponseDTO("delete call success", data);
-		return dto;
+
+		List<AddressData> data = addressBookRepository.findAll();
+		Optional<AddressData> getAddress = data.stream().filter(e -> e.getId() == id).findFirst();
+		if (getAddress.isPresent()) {
+			AddressData addressData = data.stream().filter(e -> e.getId() == id).findFirst().get();
+			addressBookRepository.delete(addressData);
+			ResponseDTO dto = new ResponseDTO("delete call success", getAddress);
+			return dto;
+		} else {
+			throw new ABSException(id + " <- id not found to delete data");
+
+		}
 	}
 
 }
