@@ -2,10 +2,13 @@ package com.bridgelabz.app.exceptionhandler;
 
 import java.util.NoSuchElementException;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.bridgelabz.app.dto.AddressDTO;
 import com.bridgelabz.app.dto.ResponseDTO;
 
 @RestControllerAdvice
@@ -20,5 +23,7 @@ public class Exception extends RuntimeException {
 		return new ResponseDTO("no element found exception",null);
 	}
 	
-	
+
 }
+	
+

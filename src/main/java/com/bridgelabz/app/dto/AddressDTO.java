@@ -13,6 +13,11 @@ public @Data class AddressDTO {
 	@Pattern(regexp = "[A-Za-z]+", message = "invalid address	")
 	private String address;
 	private int pin;
-	private long id;
+	private long id;	
+	private String cityName;
+	private String stateName;
+	private String phoneNumber;
+	private String emailAddress;
+
 	
 }

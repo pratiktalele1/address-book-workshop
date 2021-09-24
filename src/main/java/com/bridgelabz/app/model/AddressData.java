@@ -12,12 +12,20 @@ public @Data class AddressData {
 	private String address;
 	private int pin;
 	private long id;
+	private String cityName;
+	private String stateName;
+	private String phoneNumber;
+	private String emailAddress;
 	
 	public AddressData(long id,AddressDTO addressDTO) {
 		this.id=id;
 		this.name=addressDTO.getName();
 		this.pin=addressDTO.getPin();
 		this.address=addressDTO.getAddress();
+		this.cityName=addressDTO.getCityName();
+		this.stateName=addressDTO.getStateName();
+		this.phoneNumber=addressDTO.getPhoneNumber();
+		this.emailAddress=addressDTO.getEmailAddress();
 	}
 	
 	

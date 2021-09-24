@@ -56,6 +56,9 @@ public class AddressBookServiceImpl implements AddressBookService {
 		data.setName(dto.getName());
 		data.setAddress(dto.getAddress());
 		data.setPin(dto.getPin());
+		data.setCityName(dto.getCityName());
+		data.setPhoneNumber(dto.getPhoneNumber());
+		data.setEmailAddress(dto.getEmailAddress());
 		ResponseDTO responseDto = new ResponseDTO("put call success", data);
 		return responseDto;
 	}
