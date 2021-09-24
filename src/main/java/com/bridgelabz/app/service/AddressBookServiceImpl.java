@@ -23,7 +23,7 @@ public class AddressBookServiceImpl implements AddressBookService {
 	@Override
 	public ResponseDTO create(AddressDTO e) {
 		AddressData data = new AddressData(atomicLong.incrementAndGet(), e);
-		ResponseDTO dto = new ResponseDTO("get call success", data);
+		ResponseDTO dto = new ResponseDTO("post call success", data);
 		datas.add(data);
 		return dto;
 	}
@@ -33,7 +33,7 @@ public class AddressBookServiceImpl implements AddressBookService {
 	 */
 	@Override
 	public ResponseDTO readAll() {
-		ResponseDTO dto=new ResponseDTO("all data fetch", datas);
+		ResponseDTO dto=new ResponseDTO("get call success", datas);
 		return dto;
 	}
 
@@ -43,7 +43,7 @@ public class AddressBookServiceImpl implements AddressBookService {
 	@Override
 	public ResponseDTO getDataById(int id) {
 		AddressData data = datas.stream().filter(e -> e.getId() == id).findFirst().get();
-			ResponseDTO dto = new ResponseDTO("get call success", data);
+			ResponseDTO dto = new ResponseDTO("getById call success", data);
 			return dto;
 	}
 
