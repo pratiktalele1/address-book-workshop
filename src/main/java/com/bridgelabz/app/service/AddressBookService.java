@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bridgelabz.app.dto.AddressDTO;
+import com.bridgelabz.app.dto.AddressLoginDTO;
 import com.bridgelabz.app.dto.ResponseDTO;
 import com.bridgelabz.app.model.AddressData;
 
@@ -19,5 +20,8 @@ public interface AddressBookService {
 	ResponseDTO updateDataById(int id, AddressDTO dto);
 
 	ResponseDTO deleteDataById(int id);
+	
+	ResponseDTO login(AddressLoginDTO e);
 
+	ResponseDTO getLogins();
 }

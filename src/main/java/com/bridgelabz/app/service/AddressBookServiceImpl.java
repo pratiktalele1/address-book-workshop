@@ -1,18 +1,23 @@
 package com.bridgelabz.app.service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bridgelabz.app.dto.AddressDTO;
+import com.bridgelabz.app.dto.AddressLoginDTO;
 import com.bridgelabz.app.dto.ResponseDTO;
 import com.bridgelabz.app.exceptionhandler.ABSException;
 import com.bridgelabz.app.model.AddressData;
+import com.bridgelabz.app.model.AddressLogin;
+import com.bridgelabz.app.repository.IAddressBookLogin;
 import com.bridgelabz.app.repository.IAddressBookRepository;
 
 @Service
@@ -23,6 +28,9 @@ public class AddressBookServiceImpl implements AddressBookService {
 
 	@Autowired
 	private IAddressBookRepository addressBookRepository;
+	
+	@Autowired
+	private IAddressBookLogin loginData; 
 
 	/**
 	 * inserting data to list.
@@ -76,6 +84,7 @@ public class AddressBookServiceImpl implements AddressBookService {
 			addressData.setAddress(dto.getAddress());
 			addressData.setPin(dto.getPin());
 			addressData.setCityName(dto.getCityName());
+			addressData.setStateName(dto.getStateName());
 			addressData.setPhoneNumber(dto.getPhoneNumber());
 			addressData.setEmailAddress(dto.getEmailAddress());
 			addressBookRepository.save(addressData);
@@ -106,5 +115,25 @@ public class AddressBookServiceImpl implements AddressBookService {
 
 		}
 	}
+
+	@Override
+	public ResponseDTO login(AddressLoginDTO e) {
+		AddressLogin data=new AddressLogin(e.getUserName(),e.getPassword(),e.getEmail());
+		loginData.save(data);
+		ResponseDTO dto=new ResponseDTO("posting login data",data);
+		return dto;
+	}
+
+	@Override
+	public ResponseDTO getLogins() {
+		ResponseDTO dto =new ResponseDTO("getting all login data",loginData.findAll());
+		return dto;
+	}
+
+	
+
+
+	
+	
 
 }

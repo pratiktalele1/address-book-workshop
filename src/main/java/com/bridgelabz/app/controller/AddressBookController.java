@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.app.dto.AddressDTO;
+import com.bridgelabz.app.dto.AddressLoginDTO;
 import com.bridgelabz.app.dto.ResponseDTO;
 import com.bridgelabz.app.exceptionhandler.ABSException;
 import com.bridgelabz.app.model.AddressData;
@@ -29,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @RestController
-@RequestMapping("/address") @Slf4j
+@RequestMapping("/address") @Slf4j @CrossOrigin
 public class AddressBookController {
 //	private List<AddressDTO> list=new ArrayList<AddressDTO>();
 	
@@ -53,10 +55,10 @@ public class AddressBookController {
 	 * @param AddressData
 	 * @return response dto
 	 */
-	@PostMapping
+	@PostMapping @CrossOrigin
 	private ResponseEntity<ResponseDTO> create(@Valid @RequestBody AddressDTO AddressData) {
 		log.info("data inserted.");
-		return new ResponseEntity<>(addressBookService.create(AddressData),HttpStatus.CREATED);
+		return new ResponseEntity<>(addressBookService.create(AddressData),HttpStatus.OK);
 	}
 	
 	/**
@@ -64,10 +66,10 @@ public class AddressBookController {
 	 * @param id
 	 * @return response dto
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("/{id}") @CrossOrigin
 	private ResponseEntity<ResponseDTO> getById(@PathVariable int id){
 		log.info("data is retrived with id ->"+id);
-		return new ResponseEntity<>(addressBookService.getDataById(id),HttpStatus.FOUND);
+		return new ResponseEntity<>(addressBookService.getDataById(id),HttpStatus.OK);
 	}
 	
 	/**
@@ -92,4 +94,14 @@ public class AddressBookController {
 		return new ResponseEntity<>(addressBookService.deleteDataById(id),HttpStatus.OK);
 	}
 
+	@PostMapping("/login")
+	private ResponseEntity<ResponseDTO> login(@RequestBody AddressLoginDTO e) {
+	    return new ResponseEntity<>(addressBookService.login(e),HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/getLogin")
+	private ResponseEntity<ResponseDTO> getLogins() {
+		return new ResponseEntity<>(addressBookService.getLogins(),HttpStatus.OK);
+	}
+	
 }

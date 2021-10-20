@@ -8,12 +8,12 @@ import lombok.Setter;
 
 @Getter @Setter
 public @Data class AddressDTO {
-	@Pattern(regexp = "[A-Za-z]+", message = "invalid user name")
+//	@Pattern(regexp = "[A-Za-z]+", message = "invalid user name")
 	private String name;
-	@Pattern(regexp = "[A-Za-z]+", message = "invalid address")
+//	@Pattern(regexp = "[A-Za-z]+", message = "invalid address")
 	private String address;
 	private int pin;
-	private long id;	
+//	private long id;	
 	private String cityName;
 	private String stateName;
 	private String phoneNumber;
